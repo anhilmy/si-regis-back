@@ -43,4 +43,12 @@ go.work
 .history
 .ionide
 
+.env*
+!.env.example
+!.env.production
+!.env.test
+!.env.development
+
+tmp*
+
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode

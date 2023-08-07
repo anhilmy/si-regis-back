@@ -1,25 +1,78 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"os"
 	docs "sireg/rest-api-kegiatan/docs"
+	"sireg/rest-api-kegiatan/internal/kategori"
+	"sireg/rest-api-kegiatan/internal/repository"
+	"sireg/rest-api-kegiatan/pkg/dbcontext"
 
 	"github.com/gin-gonic/gin"
+	dbx "github.com/go-ozzo/ozzo-dbx"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title 		SIREG Kegiatan Kategori
+// @version 	0.1
+// @description	Endpoint SIREG Kegiatan Kategori
+
+// @contact.name 	anhilmy
+// @contact.email 	hilmyahmadnaufal@gmail.com
+
+// @host 		localhost:8080
+// @BasePath 	/api/1
+
+//	@securityDefinitions.basic	BasicAuth
+
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
+//	@name						Authorization
+//	@description				Description for what is this security definition being used
+
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file", err.Error())
+		os.Exit(-1)
+	}
+
+	fmt.Println(os.Getenv("DATABASE_URL"))
+	db, err := dbx.MustOpen("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Fatal("Cannot connect to database", err.Error())
+		os.Exit(-1)
+	}
+
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Fatal("Error when closing the database", err.Error())
+		}
+	}()
+
 	router := gin.Default()
 	docs.SwaggerInfo.BasePath = "/api/v1"
-	v1 := router.Group("/api/v1")
-	{
-		v1.GET("/", index)
-	}
+	router = buildHandler(dbcontext.New(db), router)
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	router.Run()
 }
 
-// @BasePath /api/v1
+func buildHandler(db *dbcontext.DB, router *gin.Engine) *gin.Engine {
+
+	kategoriRepo := repository.NewKategoriRepo(db)
+
+	rv1 := router.Group("/api/v1")
+	kategori.RegisterHandler(rv1.Group("/kategori"),
+		kategori.NewService(kategoriRepo),
+	)
+
+	return router
+}
 
 // PingExample godoc
 // @Summary ping example
@@ -28,7 +81,7 @@ func main() {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Success 200 {string} helloword
+// @Success 200 {Object} helloword
 // @Router / [get]
 func index(c *gin.Context) {
 	c.JSON(200, gin.H{

@@ -1,6 +1,12 @@
-basePath: /api/v1
+basePath: /api/1
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: hilmyahmadnaufal@gmail.com
+    name: anhilmy
+  description: Endpoint SIREG Kegiatan Kategori
+  title: SIREG Kegiatan Kategori
+  version: "0.1"
 paths:
   /:
     get:
@@ -13,8 +19,16 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            type: Object
       summary: ping example
       tags:
       - example
+securityDefinitions:
+  ApiKeyAuth:
+    description: Description for what is this security definition being used
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
 swagger: "2.0"
