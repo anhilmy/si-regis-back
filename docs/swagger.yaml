@@ -1,4 +1,20 @@
 basePath: /api/1
+definitions:
+  response.Kategori:
+    properties:
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      nama:
+        type: string
+    type: object
+  response.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -23,6 +39,27 @@ paths:
       summary: ping example
       tags:
       - example
+  /kategori/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.Kategori'
+                  type: array
+              type: object
+      summary: get all active kategorisss
+      tags:
+      - kategori
 securityDefinitions:
   ApiKeyAuth:
     description: Description for what is this security definition being used
