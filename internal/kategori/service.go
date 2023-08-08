@@ -2,6 +2,7 @@ package kategori
 
 import (
 	"context"
+	"sireg/rest-api-kegiatan/internal/model"
 	"sireg/rest-api-kegiatan/internal/repository"
 	"sireg/rest-api-kegiatan/internal/response"
 )
@@ -29,4 +30,20 @@ func (s service) GetAll(ctx context.Context) (*response.SuccessResponse, error) 
 		Data:    kategori,
 	}
 	return &res, nil
+}
+
+func (s service) Get(ctx context.Context, kategoriId int) (*response.SuccessResponse, error) {
+	return nil, nil
+}
+
+func (s service) Create(ctx context.Context, kategori *model.Kategori) (*response.SuccessResponse, error) {
+	return nil, nil
+}
+
+func (s service) Update(ctx context.Context, kategori *model.Kategori) (*response.SuccessResponse, error) {
+	return nil, nil
+}
+
+func (s service) Delete(ctx context.Context, kategoriId int) (*response.SuccessResponse, error) {
+	return nil, nil
 }
