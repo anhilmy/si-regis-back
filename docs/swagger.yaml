@@ -1,5 +1,15 @@
 basePath: /api/1
 definitions:
+  request.ReqKategori:
+    properties:
+      is_active:
+        type: boolean
+      nama:
+        type: string
+    required:
+    - is_active
+    - nama
+    type: object
   response.Kategori:
     properties:
       id:
@@ -57,7 +67,106 @@ paths:
                     $ref: '#/definitions/response.Kategori'
                   type: array
               type: object
-      summary: get all active kategorisss
+      summary: get all kategoris
+      tags:
+      - kategori
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: create new kategori
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReqKategori'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Kategori'
+              type: object
+      summary: create kategori
+      tags:
+      - kategori
+  /kategori/{kategoriId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id kategori
+        in: path
+        name: kategoriId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SuccessResponse'
+      summary: delete kategori
+      tags:
+      - kategori
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id kategori
+        in: path
+        name: kategoriId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Kategori'
+              type: object
+      summary: get kategori
+      tags:
+      - kategori
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: create new kategori
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReqKategori'
+      - description: id kategori
+        in: path
+        name: kategoriId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Kategori'
+              type: object
+      summary: create kategori
       tags:
       - kategori
 securityDefinitions:

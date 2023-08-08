@@ -48,10 +48,10 @@ func (r kategoriRepo) Create(ctx context.Context, kategori *model.Kategori) erro
 	return err
 }
 func (r kategoriRepo) Update(ctx context.Context, kategori *model.Kategori) error {
-	err := r.db.DB().Model(&kategori).Update()
+	err := r.db.DB().Model(kategori).Update()
 	return err
 }
 func (r kategoriRepo) Delete(ctx context.Context, kategoriId int) error {
-	err := r.db.DB().Model(&model.Kategori{ID: kategoriId}).Delete()
+	err := r.db.DB().Model(model.Kategori{ID: kategoriId}).Delete()
 	return err
 }

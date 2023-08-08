@@ -53,7 +53,7 @@ const docTemplate = `{
                 "tags": [
                     "kategori"
                 ],
-                "summary": "get all active kategorisss",
+                "summary": "get all kategoris",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -77,10 +77,190 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kategori"
+                ],
+                "summary": "create kategori",
+                "parameters": [
+                    {
+                        "description": "create new kategori",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ReqKategori"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Kategori"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/kategori/{kategoriId}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kategori"
+                ],
+                "summary": "get kategori",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id kategori",
+                        "name": "kategoriId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Kategori"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kategori"
+                ],
+                "summary": "delete kategori",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id kategori",
+                        "name": "kategoriId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.SuccessResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kategori"
+                ],
+                "summary": "create kategori",
+                "parameters": [
+                    {
+                        "description": "create new kategori",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ReqKategori"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id kategori",
+                        "name": "kategoriId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Kategori"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
+        "request.ReqKategori": {
+            "type": "object",
+            "required": [
+                "is_active",
+                "nama"
+            ],
+            "properties": {
+                "is_active": {
+                    "type": "boolean"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
         "response.Kategori": {
             "type": "object",
             "properties": {

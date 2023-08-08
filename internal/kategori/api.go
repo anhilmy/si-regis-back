@@ -1,6 +1,7 @@
 package kategori
 
 import (
+	"fmt"
 	"sireg/rest-api-kegiatan/internal/request"
 	"sireg/rest-api-kegiatan/internal/response"
 
@@ -14,7 +15,7 @@ func RegisterHandler(router *gin.RouterGroup, service Service) {
 	router.GET("/", res.GetAll)
 	router.GET("/:kategoriId", res.Get)
 	router.POST("/", res.Create)
-	router.PATCH("/", res.Update)
+	router.PATCH("/:kategoriId", res.Update)
 	router.DELETE("/:kategoriId", res.Delete)
 
 }
@@ -23,8 +24,8 @@ type resource struct {
 	s Service
 }
 
-// Get all active kategori godoc
-// @Summary get all active kategoris
+// Get all kategori godoc
+// @Summary get all kategoris
 // @Schemes
 // @Tags kategori
 // @Accept json
@@ -45,6 +46,15 @@ func (r resource) GetAll(c *gin.Context) {
 	c.JSON(200, res)
 }
 
+// Get kategori godoc
+// @Summary get kategori
+// @Schemes
+// @Tags kategori
+// @Accept json
+// @Produce json
+// @Param kategoriId path int true "id kategori"
+// @Success 200 {object} response.SuccessResponse{data=response.Kategori}
+// @Router /kategori/{kategoriId} [get]
 func (r resource) Get(c *gin.Context) {
 	var kategoriId request.PathKategoriID
 	if err := c.BindUri(&kategoriId); err != nil {
@@ -66,9 +76,19 @@ func (r resource) Get(c *gin.Context) {
 
 	c.JSON(200, res)
 }
+
+// Create kategori godoc
+// @Summary create kategori
+// @Schemes
+// @Tags kategori
+// @Accept json
+// @Produce json
+// @Param request body request.ReqKategori true "create new kategori"
+// @Success 200 {object} response.SuccessResponse{data=response.Kategori}
+// @Router /kategori/ [post]
 func (r resource) Create(c *gin.Context) {
 	var request request.ReqKategori
-	if err := c.BindWith(&request, binding.JSON); err != nil {
+	if err := c.MustBindWith(&request, binding.JSON); err != nil {
 		// this should cancel the context because BindWith
 		return
 	}
@@ -88,9 +108,20 @@ func (r resource) Create(c *gin.Context) {
 	c.JSON(200, res)
 }
 
+// Update kategori godoc
+// @Summary create kategori
+// @Schemes
+// @Tags kategori
+// @Accept json
+// @Produce json
+// @Param request body request.ReqKategori true "create new kategori"
+// @Param kategoriId path int true "id kategori"
+// @Success 200 {object} response.SuccessResponse{data=response.Kategori}
+// @Router /kategori/{kategoriId} [patch]
 func (r resource) Update(c *gin.Context) {
 	var reqBody request.ReqKategori
-	if err := c.BindWith(&reqBody, binding.JSON); err != nil {
+	if err := c.MustBindWith(&reqBody, binding.JSON); err != nil {
+		fmt.Println(err.Error())
 		// this should cancel the context because BindWith
 		return
 	}
@@ -105,6 +136,7 @@ func (r resource) Update(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
 		})
+		return
 	}
 
 	res := response.SuccessResponse{
@@ -115,6 +147,15 @@ func (r resource) Update(c *gin.Context) {
 	c.JSON(200, res)
 }
 
+// Delete kategori godoc
+// @Summary delete kategori
+// @Schemes
+// @Tags kategori
+// @Accept json
+// @Produce json
+// @Param kategoriId path int true "id kategori"
+// @Success 200 {object} response.SuccessResponse
+// @Router /kategori/{kategoriId} [delete]
 func (r resource) Delete(c *gin.Context) {
 	var kategoriId request.PathKategoriID
 	if err := c.BindUri(&kategoriId); err != nil {
