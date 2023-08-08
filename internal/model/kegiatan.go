@@ -3,9 +3,10 @@ package model
 import "database/sql"
 
 type Kegiatan struct {
-	ID       sql.NullInt32
-	Judul    sql.NullString
-	Desc     sql.NullString
-	Kategori Kategori
-	NoSurat  sql.NullString
+	ID         int32
+	Judul      sql.NullString
+	Desc       sql.NullString
+	KategoriId sql.NullInt32 `db:"kategoriId"`
+	Kategori   Kategori      `db:"-"`
+	NoSurat    sql.NullString
 }

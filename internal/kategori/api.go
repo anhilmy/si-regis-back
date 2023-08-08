@@ -1,7 +1,6 @@
 package kategori
 
 import (
-	"fmt"
 	"sireg/rest-api-kegiatan/internal/request"
 	"sireg/rest-api-kegiatan/internal/response"
 
@@ -121,7 +120,6 @@ func (r resource) Create(c *gin.Context) {
 func (r resource) Update(c *gin.Context) {
 	var reqBody request.ReqKategori
 	if err := c.MustBindWith(&reqBody, binding.JSON); err != nil {
-		fmt.Println(err.Error())
 		// this should cancel the context because BindWith
 		return
 	}
@@ -136,7 +134,6 @@ func (r resource) Update(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
 		})
-		return
 	}
 
 	res := response.SuccessResponse{

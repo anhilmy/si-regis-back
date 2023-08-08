@@ -51,6 +51,6 @@ func (r kegiatanRepo) Update(ctx context.Context, kegiatan *model.Kegiatan) erro
 	return err
 }
 func (r kegiatanRepo) Delete(ctx context.Context, kategoriId int32) error {
-	err := r.db.DB().Model(model.Kegiatan{ID: sql.NullInt32{Int32: kategoriId, Valid: true}}).Delete()
+	err := r.db.DB().Model(&model.Kegiatan{ID: kategoriId}).Delete()
 	return err
 }

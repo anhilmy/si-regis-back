@@ -3,11 +3,11 @@ package response
 import "sireg/rest-api-kegiatan/internal/model"
 
 type Kegiatan struct {
-	ID       int32
-	Judul    string
-	Desc     string
+	ID       int32            `json:"id"`
+	Judul    string           `json:"judul"`
+	Desc     string           `json:"desc"`
 	Kategori KegiatanKategori `json:"kategori"`
-	NoSurat  string
+	NoSurat  string           `json:"no_surat"`
 }
 
 type KegiatanKategori struct {
@@ -16,12 +16,12 @@ type KegiatanKategori struct {
 
 func ConvertFromKegiatanModel(kategori *model.Kegiatan) Kegiatan {
 	return Kegiatan{
-		ID:      kategori.ID.Int32,
+		ID:      kategori.ID,
 		Judul:   kategori.Judul.String,
 		Desc:    kategori.Desc.String,
 		NoSurat: kategori.NoSurat.String,
 		Kategori: KegiatanKategori{
-			ID: int32(kategori.Kategori.ID),
+			ID: kategori.KategoriId.Int32,
 		},
 	}
 }

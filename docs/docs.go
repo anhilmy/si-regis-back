@@ -243,6 +243,208 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/kegiatan/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kegiatan"
+                ],
+                "summary": "get all kegiatan",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/response.Kegiatan"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kegiatan"
+                ],
+                "summary": "create kegiatan",
+                "parameters": [
+                    {
+                        "description": "create new kegiatan",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ReqKegiatan"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Kegiatan"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/kegiatan/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kegiatan"
+                ],
+                "summary": "get kegiatan",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id kegiatan",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Kegiatan"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kegiatan"
+                ],
+                "summary": "delete kegiatan",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id kegiatan",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.SuccessResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kegiatan"
+                ],
+                "summary": "create kegiatan",
+                "parameters": [
+                    {
+                        "description": "create new kegiatan",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ReqKegiatan"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id kegiatan",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.Kegiatan"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -262,6 +464,38 @@ const docTemplate = `{
                 }
             }
         },
+        "request.ReqKegiatan": {
+            "type": "object",
+            "required": [
+                "judul",
+                "kategori"
+            ],
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "judul": {
+                    "type": "string"
+                },
+                "kategori": {
+                    "$ref": "#/definitions/request.ReqKegiatanKategori"
+                },
+                "no_surat": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.ReqKegiatanKategori": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "response.Kategori": {
             "type": "object",
             "properties": {
@@ -273,6 +507,34 @@ const docTemplate = `{
                 },
                 "nama": {
                     "type": "string"
+                }
+            }
+        },
+        "response.Kegiatan": {
+            "type": "object",
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "judul": {
+                    "type": "string"
+                },
+                "kategori": {
+                    "$ref": "#/definitions/response.KegiatanKategori"
+                },
+                "noSurat": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.KegiatanKategori": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },

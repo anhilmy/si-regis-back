@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	docs "sireg/rest-api-kegiatan/docs"
 	"sireg/rest-api-kegiatan/internal/kategori"
+	"sireg/rest-api-kegiatan/internal/kegiatan"
 	"sireg/rest-api-kegiatan/internal/repository"
 	"sireg/rest-api-kegiatan/pkg/dbcontext"
 	"syscall"
@@ -52,6 +53,8 @@ func main() {
 		log.Fatal("Cannot connect to database", err.Error())
 		os.Exit(-1)
 	}
+
+	db.LogFunc = log.Printf
 
 	defer func() {
 		if err := db.Close(); err != nil {
@@ -102,10 +105,15 @@ func main() {
 func buildHandler(db *dbcontext.DB, router *gin.Engine) *gin.Engine {
 
 	kategoriRepo := repository.NewKategoriRepo(db)
+	kegiatanRepo := repository.NewKegiatanRepo(db)
 
 	rv1 := router.Group("/api/v1")
 	kategori.RegisterHandler(rv1.Group("/kategori"),
 		kategori.NewService(kategoriRepo),
+	)
+
+	kegiatan.RegisterHandler(rv1.Group("/kegiatan"),
+		kegiatan.NewService(kegiatanRepo),
 	)
 
 	return router

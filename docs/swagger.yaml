@@ -11,6 +11,27 @@ definitions:
     - is_active
     - nama
     type: object
+  request.ReqKegiatan:
+    properties:
+      desc:
+        type: string
+      judul:
+        type: string
+      kategori:
+        $ref: '#/definitions/request.ReqKegiatanKategori'
+      no_surat:
+        type: string
+    required:
+    - judul
+    - kategori
+    type: object
+  request.ReqKegiatanKategori:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
   response.Kategori:
     properties:
       id:
@@ -19,6 +40,24 @@ definitions:
         type: boolean
       nama:
         type: string
+    type: object
+  response.Kegiatan:
+    properties:
+      desc:
+        type: string
+      id:
+        type: integer
+      judul:
+        type: string
+      kategori:
+        $ref: '#/definitions/response.KegiatanKategori'
+      noSurat:
+        type: string
+    type: object
+  response.KegiatanKategori:
+    properties:
+      id:
+        type: integer
     type: object
   response.SuccessResponse:
     properties:
@@ -170,6 +209,126 @@ paths:
       summary: create kategori
       tags:
       - kategori
+  /kegiatan/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.Kegiatan'
+                  type: array
+              type: object
+      summary: get all kegiatan
+      tags:
+      - kegiatan
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: create new kegiatan
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReqKegiatan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Kegiatan'
+              type: object
+      summary: create kegiatan
+      tags:
+      - kegiatan
+  /kegiatan/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id kegiatan
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SuccessResponse'
+      summary: delete kegiatan
+      tags:
+      - kegiatan
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id kegiatan
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Kegiatan'
+              type: object
+      summary: get kegiatan
+      tags:
+      - kegiatan
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: create new kegiatan
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReqKegiatan'
+      - description: id kegiatan
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.Kegiatan'
+              type: object
+      summary: create kegiatan
+      tags:
+      - kegiatan
 securityDefinitions:
   ApiKeyAuth:
     description: Description for what is this security definition being used
