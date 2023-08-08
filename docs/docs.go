@@ -254,7 +254,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "is_active": {
-                    "type": "boolean"
+                    "type": "string",
+                    "example": "false"
                 },
                 "nama": {
                     "type": "string"

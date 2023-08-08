@@ -3,7 +3,8 @@ definitions:
   request.ReqKategori:
     properties:
       is_active:
-        type: boolean
+        example: "false"
+        type: string
       nama:
         type: string
     required:

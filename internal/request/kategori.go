@@ -4,7 +4,7 @@ import "sireg/rest-api-kegiatan/internal/model"
 
 type ReqKategori struct {
 	Nama     string `json:"nama" binding:"required"`
-	IsActive string `json:"is_active" binding:"required,boolean"`
+	IsActive string `json:"is_active" binding:"required,boolean" example:"false"`
 }
 
 type PathKategoriID struct {
