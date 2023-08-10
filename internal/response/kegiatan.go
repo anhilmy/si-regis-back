@@ -38,15 +38,17 @@ func ConvertFromManyKegiatanModel(source []model.Kegiatan) []Kegiatan {
 
 type SummaryKegiatan struct {
 	TotalKegiatan int32  `db:"total_kegiatan" json:"total_kegiatan"`
-	KategoriId    int32  `db:"kategoriId" json:"kategori_id"`
+	KategoriId    int32  `db:"kategori.id" json:"id"`
 	NamaKategori  string `db:"nama" json:"nama"`
+	IsActive      string `db:"is_active" json:"is_active"`
 }
 
 func ConvertFromDTOSummary(DTOSumm model.DTOSummaryKegiatan) *SummaryKegiatan {
 	return &SummaryKegiatan{
-		TotalKegiatan: DTOSumm.Total,
+		TotalKegiatan: DTOSumm.Total.Int32,
 		KategoriId:    DTOSumm.KategoriId,
 		NamaKategori:  DTOSumm.NamaKategori,
+		IsActive:      DTOSumm.IsActive,
 	}
 }
 

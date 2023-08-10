@@ -12,7 +12,8 @@ type Kegiatan struct {
 }
 
 type DTOSummaryKegiatan struct {
-	Total        int32  `db:"total_kegiatan"`
-	KategoriId   int32  `db:"kategoriId"`
-	NamaKategori string `db:"nama"`
+	Total        sql.NullInt32 `db:"total_kegiatan"`
+	KategoriId   int32         `db:"kategoriId"`
+	NamaKategori string        `db:"nama"`
+	IsActive     string        `db:"is_active"`
 }

@@ -58,7 +58,7 @@ func (r kegiatanRepo) Delete(ctx context.Context, kategoriId int32) error {
 
 func (r kegiatanRepo) GetSummary(ctx context.Context) ([]model.DTOSummaryKegiatan, error) {
 	var res []model.DTOSummaryKegiatan
-	err := r.db.DB().Select("COUNT(*) as total_kegiatan", "kategoriId", "kategori.nama").From("kegiatan").LeftJoin("kategori", dbx.NewExp(`kategori.id = kegiatan."kategoriId"`)).GroupBy("kategoriId", "kategori.nama").All(&res)
+	err := r.db.DB().Select("COUNT(*) as total_kegiatan", "kategori.id as kategoriId", "kategori.nama", "is_active").From("kategori").LeftJoin("kegiatan", dbx.NewExp(`kategori.id = kegiatan."kategoriId"`)).GroupBy("kategori.id", "kategori.nama", "is_active").All(&res)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
