@@ -13,6 +13,7 @@ type Service interface {
 	Create(ctx context.Context, kegiatan *request.ReqKegiatan) (*response.Kegiatan, error)
 	Update(ctx context.Context, kegiatan *request.ReqKegiatan, kegiatanId int32) (*response.Kegiatan, error)
 	Delete(ctx context.Context, kegiatanId int32) error
+	Summary(ctx context.Context) ([]response.SummaryKegiatan, error)
 }
 
 type service struct {
@@ -70,4 +71,14 @@ func (s service) Delete(ctx context.Context, kegiatanId int32) error {
 		return err
 	}
 	return nil
+}
+
+func (s service) Summary(ctx context.Context) ([]response.SummaryKegiatan, error) {
+	DTOSumm, err := s.kegiatanRepo.GetSummary(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res := response.ConvertFromManyTOSummary(DTOSumm)
+	return res, nil
 }

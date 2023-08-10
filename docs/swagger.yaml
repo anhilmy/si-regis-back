@@ -51,7 +51,7 @@ definitions:
         type: string
       kategori:
         $ref: '#/definitions/response.KegiatanKategori'
-      noSurat:
+      no_surat:
         type: string
     type: object
   response.KegiatanKategori:
@@ -200,12 +200,7 @@ paths:
         "200":
           description: OK
           schema:
-            allOf:
-            - $ref: '#/definitions/response.SuccessResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/response.Kategori'
-              type: object
+            $ref: '#/definitions/response.SuccessResponse'
       summary: create kategori
       tags:
       - kategori
@@ -327,6 +322,20 @@ paths:
                   $ref: '#/definitions/response.Kegiatan'
               type: object
       summary: create kegiatan
+      tags:
+      - kegiatan
+  /kegiatan/summary:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SuccessResponse'
+      summary: group kegiatan
       tags:
       - kegiatan
 securityDefinitions:

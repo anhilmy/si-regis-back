@@ -18,7 +18,7 @@ func (k ReqKegiatan) ConvertToModel() *model.Kegiatan {
 		Desc:       sql.NullString{String: k.Desc, Valid: true},
 		KategoriId: sql.NullInt32{Int32: k.Kategori.ID, Valid: true},
 		Kategori: model.Kategori{
-			ID: int(k.Kategori.ID),
+			ID: int32(k.Kategori.ID),
 		},
 		NoSurat: sql.NullString{String: k.NoSurat, Valid: true},
 	}
@@ -31,7 +31,7 @@ func (k ReqKegiatan) ConvertToModelWithID(kategoriID int32) *model.Kegiatan {
 		Desc:       sql.NullString{String: k.Desc, Valid: true},
 		KategoriId: sql.NullInt32{Int32: k.Kategori.ID, Valid: true},
 		Kategori: model.Kategori{
-			ID: int(k.Kategori.ID),
+			ID: k.Kategori.ID,
 		},
 		NoSurat: sql.NullString{String: k.NoSurat, Valid: true},
 	}

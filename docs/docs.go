@@ -226,19 +226,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/response.SuccessResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/response.Kategori"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/response.SuccessResponse"
                         }
                     }
                 }
@@ -319,6 +307,28 @@ const docTemplate = `{
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+        },
+        "/kegiatan/summary": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kegiatan"
+                ],
+                "summary": "group kegiatan",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.SuccessResponse"
                         }
                     }
                 }
@@ -525,7 +535,7 @@ const docTemplate = `{
                 "kategori": {
                     "$ref": "#/definitions/response.KegiatanKategori"
                 },
-                "noSurat": {
+                "no_surat": {
                     "type": "string"
                 }
             }

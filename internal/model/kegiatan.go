@@ -10,3 +10,9 @@ type Kegiatan struct {
 	Kategori   Kategori      `db:"-"`
 	NoSurat    sql.NullString
 }
+
+type DTOSummaryKegiatan struct {
+	Total        int32  `db:"total_kegiatan"`
+	KategoriId   int32  `db:"kategoriId"`
+	NamaKategori string `db:"nama"`
+}

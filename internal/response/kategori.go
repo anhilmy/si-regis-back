@@ -10,7 +10,7 @@ type Kategori struct {
 
 func ConvertKategori(kategori *model.Kategori) Kategori {
 	return Kategori{
-		ID:       kategori.ID,
+		ID:       int(kategori.ID),
 		Nama:     kategori.Nama,
 		IsActive: kategori.IsActive,
 	}

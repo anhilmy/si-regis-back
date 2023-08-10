@@ -1,6 +1,7 @@
 package kegiatan
 
 import (
+	"net/http"
 	"sireg/rest-api-kegiatan/internal/request"
 	"sireg/rest-api-kegiatan/internal/response"
 
@@ -16,6 +17,7 @@ func RegisterHandler(router *gin.RouterGroup, service Service) {
 	router.POST("/", res.Create)
 	router.PATCH("/:id", res.Update)
 	router.DELETE("/:id", res.Delete)
+	router.GET("/summary", res.Summary)
 
 }
 
@@ -32,18 +34,18 @@ type resource struct {
 // @Success 200 {object} response.SuccessResponse{data=[]response.Kegiatan}
 // @Router /kegiatan/ [get]
 func (r resource) GetAll(c *gin.Context) {
-	kategoris, err := r.s.GetAll(c)
+	kegiatans, err := r.s.GetAll(c)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
 		return
 	}
 	res := response.SuccessResponse{
 		Message: "success",
-		Data:    kategoris,
+		Data:    kegiatans,
 	}
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 // Get kegiatan godoc
@@ -64,7 +66,7 @@ func (r resource) Get(c *gin.Context) {
 
 	kegiatan, err := r.s.Get(c, kegiatanId.ID)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
 		return
@@ -75,7 +77,7 @@ func (r resource) Get(c *gin.Context) {
 		Data:    kegiatan,
 	}
 
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 // Create kegiatan godoc
@@ -91,12 +93,13 @@ func (r resource) Create(c *gin.Context) {
 	var request request.ReqKegiatan
 	if err := c.MustBindWith(&request, binding.JSON); err != nil {
 		// this should cancel the context because BindWith
+		c.JSON(http.StatusBadRequest, gin.H{"message": "400 bad request"})
 		return
 	}
 
 	kegiatan, err := r.s.Create(c, &request)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
 		return
@@ -107,7 +110,7 @@ func (r resource) Create(c *gin.Context) {
 		Data:    kegiatan,
 	}
 
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 // Update kegiatan godoc
@@ -124,6 +127,7 @@ func (r resource) Update(c *gin.Context) {
 	var reqBody request.ReqKegiatan
 	if err := c.MustBindWith(&reqBody, binding.JSON); err != nil {
 		// this should cancel the context because BindWith
+		c.JSON(http.StatusBadRequest, gin.H{"message": "400 bad request"})
 		return
 	}
 
@@ -134,7 +138,7 @@ func (r resource) Update(c *gin.Context) {
 
 	kegiatan, err := r.s.Update(c, &reqBody, kegiatanId.ID)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
 		return
@@ -145,7 +149,7 @@ func (r resource) Update(c *gin.Context) {
 		Data:    kegiatan,
 	}
 
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 // Delete kegiatan godoc
@@ -165,7 +169,7 @@ func (r resource) Delete(c *gin.Context) {
 
 	err := r.s.Delete(c, kegiatanId.ID)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
 		return
@@ -175,5 +179,29 @@ func (r resource) Delete(c *gin.Context) {
 		Message: "success",
 	}
 
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
+}
+
+// Get group kegiatan godoc
+// @Summary group kegiatan
+// @Schemes
+// @Tags kegiatan
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.SuccessResponse
+// @Router /kegiatan/summary [get]
+func (r resource) Summary(c *gin.Context) {
+	summ, err := r.s.Summary(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	res := response.SuccessResponse{
+		Message: "success",
+		Data:    summ,
+	}
+
+	c.JSON(http.StatusOK, res)
 }

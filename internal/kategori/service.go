@@ -2,6 +2,7 @@ package kategori
 
 import (
 	"context"
+	"errors"
 	"sireg/rest-api-kegiatan/internal/repository"
 	"sireg/rest-api-kegiatan/internal/request"
 	"sireg/rest-api-kegiatan/internal/response"
@@ -11,7 +12,7 @@ type Service interface {
 	GetAll(ctx context.Context) ([]response.Kategori, error)
 	Get(ctx context.Context, kategoriId int) (*response.Kategori, error)
 	Create(ctx context.Context, kategori *request.ReqKategori) (*response.Kategori, error)
-	Update(ctx context.Context, kategori *request.ReqKategori, kategoriId int) (*response.Kategori, error)
+	Update(ctx context.Context, kategori *request.ReqKategori, kategoriId int) error
 	Delete(ctx context.Context, kategoriId int) error
 }
 
@@ -37,6 +38,8 @@ func (s service) Get(ctx context.Context, kategoriId int) (*response.Kategori, e
 	kategori, err := s.kategoriRepo.Get(ctx, kategoriId)
 	if err != nil {
 		return nil, err
+	} else if kategori == nil {
+		return nil, errors.New("id not found")
 	}
 	res := response.ConvertKategori(kategori)
 	return &res, nil
@@ -53,15 +56,14 @@ func (s service) Create(ctx context.Context, request *request.ReqKategori) (*res
 	return &res, nil
 }
 
-func (s service) Update(ctx context.Context, request *request.ReqKategori, kategoriId int) (*response.Kategori, error) {
+func (s service) Update(ctx context.Context, request *request.ReqKategori, kategoriId int) error {
 	kategori := request.ConvertToModelWithID(kategoriId)
 
 	err := s.kategoriRepo.Update(ctx, kategori)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	res := response.ConvertKategori(kategori)
-	return &res, nil
+	return nil
 }
 
 func (s service) Delete(ctx context.Context, kategoriId int) error {

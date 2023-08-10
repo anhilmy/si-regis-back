@@ -15,6 +15,7 @@ type KegiatanRepo interface {
 	Create(ctx context.Context, kegiatan *model.Kegiatan) error
 	Update(ctx context.Context, kegiatan *model.Kegiatan) error
 	Delete(ctx context.Context, kegiatanId int32) error
+	GetSummary(ctx context.Context) ([]model.DTOSummaryKegiatan, error)
 }
 
 type kegiatanRepo struct {
@@ -53,4 +54,14 @@ func (r kegiatanRepo) Update(ctx context.Context, kegiatan *model.Kegiatan) erro
 func (r kegiatanRepo) Delete(ctx context.Context, kategoriId int32) error {
 	err := r.db.DB().Model(&model.Kegiatan{ID: kategoriId}).Delete()
 	return err
+}
+
+func (r kegiatanRepo) GetSummary(ctx context.Context) ([]model.DTOSummaryKegiatan, error) {
+	var res []model.DTOSummaryKegiatan
+	err := r.db.DB().Select("COUNT(*) as total_kegiatan", "kategoriId", "kategori.nama").From("kegiatan").LeftJoin("kategori", dbx.NewExp(`kategori.id = kegiatan."kategoriId"`)).GroupBy("kategoriId", "kategori.nama").All(&res)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+
+	return res, err
 }

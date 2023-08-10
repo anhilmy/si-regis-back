@@ -32,7 +32,7 @@ func (k ReqKategori) ConvertToModelWithID(kategoriID int) *model.Kategori {
 		isActive = false
 	}
 	return &model.Kategori{
-		ID:       kategoriID,
+		ID:       int32(kategoriID),
 		Nama:     k.Nama,
 		IsActive: isActive,
 	}
