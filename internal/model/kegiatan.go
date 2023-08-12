@@ -7,8 +7,9 @@ type Kegiatan struct {
 	Judul      sql.NullString
 	Desc       sql.NullString
 	KategoriId sql.NullInt32 `db:"kategoriId"`
-	Kategori   Kategori      `db:"-"`
+	Kategori   Kategori
 	NoSurat    sql.NullString
+	Status     int32
 }
 
 type DTOSummaryKegiatan struct {
@@ -16,4 +17,20 @@ type DTOSummaryKegiatan struct {
 	KategoriId   int32         `db:"kategoriId"`
 	NamaKategori string        `db:"nama"`
 	IsActive     string        `db:"is_active"`
+}
+
+type StatusKegiatan int
+
+const (
+	PRAPELAKSANAAN StatusKegiatan = iota
+	FIELDWORK
+	PEMBUATAN_LAPORAN
+	RILIS
+)
+
+var ListStatusKegiatan = map[int32]string{
+	0: "PRAPELAKSANAAN",
+	1: "FIELDWORK",
+	2: "PEMBUATAN_LAPORAN",
+	3: "RILIS",
 }

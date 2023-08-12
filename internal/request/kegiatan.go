@@ -10,6 +10,7 @@ type ReqKegiatan struct {
 	Desc     string              `json:"desc"`
 	Kategori ReqKegiatanKategori `json:"kategori" binding:"required" db:"kategori_id"`
 	NoSurat  string              `json:"no_surat"`
+	Status   string              `json:"status" binding:"number,required"`
 }
 
 func (k ReqKegiatan) ConvertToModel() *model.Kegiatan {

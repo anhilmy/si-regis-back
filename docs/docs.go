@@ -543,8 +543,11 @@ const docTemplate = `{
         "response.KegiatanKategori": {
             "type": "object",
             "properties": {
-                "id": {
+                "ID": {
                     "type": "integer"
+                },
+                "nama": {
+                    "type": "string"
                 }
             }
         },

@@ -56,8 +56,10 @@ definitions:
     type: object
   response.KegiatanKategori:
     properties:
-      id:
+      ID:
         type: integer
+      nama:
+        type: string
     type: object
   response.SuccessResponse:
     properties:

@@ -8,21 +8,25 @@ type Kegiatan struct {
 	Desc     string           `json:"desc"`
 	Kategori KegiatanKategori `json:"kategori"`
 	NoSurat  string           `json:"no_surat"`
+	Status   string           `json:"status"`
 }
 
 type KegiatanKategori struct {
-	ID int32
+	ID   int32  `json:"ID"`
+	Nama string `json:"nama"`
 }
 
-func ConvertFromKegiatanModel(kategori *model.Kegiatan) Kegiatan {
+func ConvertFromKegiatanModel(kegiatan *model.Kegiatan) Kegiatan {
 	return Kegiatan{
-		ID:      kategori.ID,
-		Judul:   kategori.Judul.String,
-		Desc:    kategori.Desc.String,
-		NoSurat: kategori.NoSurat.String,
+		ID:      kegiatan.ID,
+		Judul:   kegiatan.Judul.String,
+		Desc:    kegiatan.Desc.String,
+		NoSurat: kegiatan.NoSurat.String,
 		Kategori: KegiatanKategori{
-			ID: kategori.KategoriId.Int32,
+			ID:   kegiatan.Kategori.ID,
+			Nama: kegiatan.Kategori.Nama,
 		},
+		Status: model.ListStatusKegiatan[kegiatan.Status],
 	}
 }
 

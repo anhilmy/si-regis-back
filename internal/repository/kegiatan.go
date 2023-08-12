@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	constant "sireg/rest-api-kegiatan/internal/const"
 	"sireg/rest-api-kegiatan/internal/model"
 	"sireg/rest-api-kegiatan/pkg/dbcontext"
 
@@ -28,7 +29,7 @@ func NewKegiatanRepo(db *dbcontext.DB) KegiatanRepo {
 
 func (r kegiatanRepo) GetAll(ctx context.Context) ([]model.Kegiatan, error) {
 	var kegiatan []model.Kegiatan
-	err := r.db.With(ctx).Select().All(&kegiatan)
+	err := r.db.With(ctx).Select("kegiatan.*", "kategori.id as kategori.id", "kategori.nama as kategori.nama").From(constant.TableKegiatan).LeftJoin(constant.TableKategori, dbx.NewExp(`kategori.id = kegiatan."kategoriId"`)).All(&kegiatan)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -58,7 +59,7 @@ func (r kegiatanRepo) Delete(ctx context.Context, kategoriId int32) error {
 
 func (r kegiatanRepo) GetSummary(ctx context.Context) ([]model.DTOSummaryKegiatan, error) {
 	var res []model.DTOSummaryKegiatan
-	err := r.db.DB().Select("COUNT(*) as total_kegiatan", "kategori.id as kategoriId", "kategori.nama", "is_active").From("kategori").LeftJoin("kegiatan", dbx.NewExp(`kategori.id = kegiatan."kategoriId"`)).GroupBy("kategori.id", "kategori.nama", "is_active").All(&res)
+	err := r.db.DB().Select("COUNT(*) as total_kegiatan", "kategori.id as kategoriId", "kategori.nama", "is_active").From("kategori").LeftJoin("kegiatan", dbx.NewExp(`kategori.id = kegiatan."kategoriId"`)).GroupBy("kategori.id", "kategori.nama", "is_active").OrderBy("kategori.id").All(&res)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
