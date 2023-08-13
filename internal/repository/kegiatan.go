@@ -45,7 +45,7 @@ func (r kegiatanRepo) Get(ctx context.Context, kegiatanId int32) (*model.Kegiata
 	return &kegiatan, err
 }
 func (r kegiatanRepo) Create(ctx context.Context, kegiatan *model.Kegiatan) error {
-	err := r.db.DB().Model(kegiatan).Insert()
+	err := r.db.DB().Model(kegiatan).Exclude("Kategori.ID", "Kategori.Nama", "Kategori.IsActive", "Kategori").Insert()
 	return err
 }
 func (r kegiatanRepo) Update(ctx context.Context, kegiatan *model.Kegiatan) error {

@@ -27,7 +27,7 @@ func NewKategoriRepo(db *dbcontext.DB) KategoriRepo {
 
 func (r kategoriRepo) GetAll(ctx context.Context) ([]model.Kategori, error) {
 	var kategori []model.Kategori
-	err := r.db.With(ctx).Select().All(&kategori)
+	err := r.db.With(ctx).Select().Where(dbx.HashExp{"is_active": true}).All(&kategori)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
